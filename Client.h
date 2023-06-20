@@ -17,6 +17,9 @@ class Client{
         auto operator==(const Client& comparison){
             return _clientInterbankKey == comparison._clientInterbankKey && _clientName == comparison._clientName;
         }
+	auto operator==(const Transaction& comp){
+		return _clientInterbankKey == comp.GetSourceKey();
+	}
         //Get functions
         auto GetClientName() const {
             return _clientName;

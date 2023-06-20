@@ -77,10 +77,10 @@ template<typename T> class List{
                 auto &operator*(){
                     return _current->GetValue();
                 }
-                auto operator==(const auto& other){
+                auto operator==(const pointer<node<T>>& other){
                     return _current == other->_current;
                 }
-                auto operator!=(const auto& other){
+                auto operator!=(const pointer<node<T>>& other){
                     return _current != other->_current;
                 }
         };
@@ -96,9 +96,11 @@ template<typename T> class List{
             //newNode->SetPosition(position);
             if(Empty()) _head = _tail = newNode;
             else{
-                if(value == (T)null) return;
-                newNode->SetPosition(position);
+//		cout<<"Add: "<<value<<endl;
+//                if(value == (T)null) return;
+//                newNode->SetPosition(position);
                 newNode->SetPrev(_tail);
+//		cout<<"hi";
                 _tail->SetNext(newNode);
                 _tail = newNode;
             }

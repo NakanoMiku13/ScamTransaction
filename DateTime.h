@@ -30,6 +30,7 @@ class DateTime{
             SetCurrentDate();
             SetCurrentTime();
         }
+	auto GetHour() const { return hour; }
         friend ostream& operator<<(ostream& os, const DateTime& time) {
             os<<time.day<<"-"<<time.month<<"-"<<time.year<<" "<<time.hour<<":"<<time.minute<<":"<<time.second;
             return os;
