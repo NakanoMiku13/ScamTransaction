@@ -8,7 +8,9 @@ List<string> names = List<string>({"Acme", "Alpha", "Apex", "Aurora", "BlueSky",
             "Vertex", "Vortex", "Wavecrest", "Xenon", "Yotta", "Zenith", "Zenithro", "Zephyr", "Zeta", "Zulu", "Zypher"});
 
 auto CreateName(){
-	return (names[rand() % names.Size() + 1] + " " + names[rand() % names.Size() + 1]);
+	int first = rand() % names.Size(), second = rand() % names.Size();
+	string s = (names[first] + " " + names[second]);
+	return s;
 }
 auto CreateId(){
 	int n = 16;
@@ -19,17 +21,30 @@ auto CreateId(){
 auto AddClient() {
     return Client(CreateName(), CreateId(), 50, 50, 50);
 }
-auto CreateRandConnection()
+auto CreateRandConnections(List<Client> clients){
+	List<Pair<Client,Client>> connections = List<Pair<Client,Client>>();
+	int connectionsN = rand() % 100 + 1;
+	for(int i = 0, first = rand() % clients.Size(), second = rand() % clients.Size() ; i < connectionsN ; i++, first = rand() % clients.Size(), second = rand() % clients.Size()){
+		if(first == second) second = rand() % clients.Size();
+		cout<<"First: "<<clients[first]<<"\nSecond: "<<clients[second]<<endl<<"Val: "<<i<<endl;
+		connections.Add(Pair<Client,Client>(clients[first],clients[second]));
+	}
+	cout<<"Complete\n";
+	return connections;
+}
 auto main()->int{
     AdjacentList<Client> clientConnectionList = AdjacentList<Client>();
 	List<Client> clients = List<Client>();
+	srand(time(NULL));
 //	cout<<"hi";
 //	for(int i = 0, j = rand() % names.Size() + 1; i<6; i++, j = rand() % names.Size() + 1) cout<<names[j]<<endl;
-	for(int i = 0; i<5;i++){
-		Client nC = AddClient();
-		cout<<nC.GetClientName()<<endl;
-		clients.Add(nC);
+	for(int i = 0 ; i < 50 ; i++) clients.Add(AddClient());
+	List<Pair<Client,Client>> clientsC = CreateRandConnections(clients);
+	cout<<clientsC.Size()<<endl;
+	for(int i = 0 ; i < clientsC.Size() ; i++){
+		cout<<clientsC[i]<<endl;
 	}
-	cout<<clientList.Size();
+	for(int i = 0 ; i < clientsC.Size() ; i++) clientConnectionList.Add(clientsC[i]);
+	cout<<clientConnectionList.Size()<<endl;
     return 0;
 }

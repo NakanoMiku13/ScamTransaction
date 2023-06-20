@@ -79,4 +79,8 @@ class Client{
         auto RemoveReport(){
             _reported = false;
         }
+        friend ostream& operator<<(ostream& os, const Client& client) {
+            os<<client.GetClientName()<<" "<<client.GetClientInterbankKey();
+            return os;
+        }
 };

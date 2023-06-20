@@ -7,7 +7,16 @@ template<typename T1,typename T2> class Pair{
     public:
         T1 first;
         T2 second;
-        Pair(T1 first = (T1)null, T2 second = (T2)null): first(first), second(second) {}
+        bool hasValue;
+        Pair(T1 first , T2 second): first(first), second(second), hasValue(true) {}
+        Pair(): hasValue(false) {}
+        auto has_value(){
+            return hasValue;
+        }
+        friend ostream& operator<<(ostream& os, const Pair<T1,T2>& val){
+            os<<val.first<<" "<<val.second<<endl;
+            return os;
+        }
 };
 template<typename T > class node{
     private:
@@ -92,15 +101,12 @@ template<typename T> class List{
         auto &Tail() { return *_tail->GetValue(); }
         auto NodePosition() { return _head; }
         auto Add(T value, pointer<node<T>> position = nullptr) {
+            cout<<"Value: "<<value<<endl;
             pointer<node<T>> newNode = new node<T>(value);
             //newNode->SetPosition(position);
             if(Empty()) _head = _tail = newNode;
             else{
-//		cout<<"Add: "<<value<<endl;
-//                if(value == (T)null) return;
-//                newNode->SetPosition(position);
                 newNode->SetPrev(_tail);
-//		cout<<"hi";
                 _tail->SetNext(newNode);
                 _tail = newNode;
             }
@@ -179,7 +185,8 @@ template<typename T> class AdjacentList{
             }
         }
         auto Add(Pair<T,T> value)->void{
-            if(value.first == (T)null) return;
+            cout<<"F "<<value.first<<" "<<value.second<<endl;
+            if(!value.has_value()) return;
             else{
                 if(Empty()){
                     pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});
@@ -188,6 +195,7 @@ template<typename T> class AdjacentList{
                     Add({value.second,(T)null});
                 }
                 else{
+                    cout<<"Val: "<<value<<endl;
                     auto temp = Find(value.first);
                     if(temp == nullptr){
                         pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});

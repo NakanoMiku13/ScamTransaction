@@ -48,4 +48,8 @@ class Transaction{
         auto GetTransactionTime() const {
             return _transactionDateTime;
         }
+        friend ostream& operator<<(ostream& os, const Transaction& transaction){
+            os<<transaction.GetId()<<endl;
+            return os;
+        } 
 };
