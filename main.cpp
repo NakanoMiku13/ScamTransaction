@@ -19,7 +19,8 @@ auto CreateId(){
 	return ret;
 }
 auto AddClient() {
-    return Client(CreateName(), CreateId(), 50, 50, 50);
+	int b = rand() % 5000000;
+    return Client(CreateName(), CreateId(), b, (rand() % 50) * b, (rand() % 50 + b) * b);
 }
 auto CreateRandConnections(List<Client> clients){
 	List<Pair<Client,Client>> connections = List<Pair<Client,Client>>();
@@ -31,6 +32,11 @@ auto CreateRandConnections(List<Client> clients){
 	}
 	cout<<"Complete\n";
 	return connections;
+}
+auto CreateTransaction(List<Client> clients)->Transaction{
+	int source = rand() % clients.Size(), target = rand() % clients.Size();
+	int options = rand() %11;
+	return (options == 5) ? Transaction(clients[source].GetClientInterbankKey(), clients[target].GetClientInterbankKey(), (float)(rand() % (int)(clients[source].GetMaximumTransactionAmount() * rand() % 50))) : Transaction(clients[source].GetClientInterbankKey(), clients[target].GetClientInterbankKey(), (float)(rand() % (int)clients[source].GetMaximumTransactionAmount()));
 }
 auto main()->int{
     AdjacentList<Client> clientConnectionList = AdjacentList<Client>();
@@ -45,6 +51,9 @@ auto main()->int{
 		cout<<clientsC[i]<<endl;
 	}
 	for(int i = 0 ; i < clientsC.Size() ; i++) clientConnectionList.Add(clientsC[i]);
-	cout<<clientConnectionList.Size()<<endl;
+	List<Transaction> allTransactions = List<Transaction>();
+	long n = (rand() % clients.Size()) * (rand() % clientConnectionList.Size() + rand() % clients.Size());
+	for(long i = 0 ; i < n ; i++) allTransactions.Add(CreateTransaction(clients));
+	cout<<allTransactions.Size();
     return 0;
 }

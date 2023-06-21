@@ -9,6 +9,7 @@ template<typename T1,typename T2> class Pair{
         T2 second;
         bool hasValue;
         Pair(T1 first , T2 second): first(first), second(second), hasValue(true) {}
+	Pair(T1 first): first(first), hasValue(false) {}
         Pair(): hasValue(false) {}
         auto has_value(){
             return hasValue;
@@ -101,7 +102,6 @@ template<typename T> class List{
         auto &Tail() { return *_tail->GetValue(); }
         auto NodePosition() { return _head; }
         auto Add(T value, pointer<node<T>> position = nullptr) {
-            cout<<"Value: "<<value<<endl;
             pointer<node<T>> newNode = new node<T>(value);
             //newNode->SetPosition(position);
             if(Empty()) _head = _tail = newNode;
@@ -185,17 +185,16 @@ template<typename T> class AdjacentList{
             }
         }
         auto Add(Pair<T,T> value)->void{
-            cout<<"F "<<value.first<<" "<<value.second<<endl;
+            cout<<"Fi "<<value.first<<" "<<value.second<<endl;
             if(!value.has_value()) return;
             else{
                 if(Empty()){
                     pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});
                     _head = _tail = newNode;
                     _size++;
-                    Add({value.second,(T)null});
+                    Add(Pair<T,T>(value.second));
                 }
                 else{
-                    cout<<"Val: "<<value<<endl;
                     auto temp = Find(value.first);
                     if(temp == nullptr){
                         pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});
@@ -203,7 +202,7 @@ template<typename T> class AdjacentList{
                         _tail->SetNext(newNode);
                         _tail = newNode;
                         _size++;
-                        Add({value.second,(T)null});
+                        Add(Pair<T,T>(value.second));
                     }else{
                         temp->GetValue()->Add(value.second);
                     }
