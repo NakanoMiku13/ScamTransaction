@@ -6,12 +6,12 @@ class ScamDetector{
         Transaction _suspectTransaction;
         List<Transaction> _transactions;
         auto _IsFriend()->bool{
-		int counter = 0;
-		for(int i = 0; i < _transactions.Size(); i++){
-			string targetKey = _transactions[i].GetTargetKey();
-			if(targetKey == _target.GetClientInterbankKey()) counter++;
-		}
-		return counter >= 4;
+            int counter = 0;
+            for(int i = 0; i < _transactions.Size(); i++){
+                string targetKey = _transactions[i].GetTargetKey();
+                if(targetKey == _target.GetClientInterbankKey()) counter++;
+            }
+            return counter >= 3;
         }
     public:
         /*
@@ -24,13 +24,15 @@ class ScamDetector{
             * Target is reported = 100 pts
         */
         ScamDetector(Transaction suspectTransaction, Client source = Client(), Client target = Client(), List<Transaction> transactions = List<Transaction>()):
-        _source(source), _target(target), _scamProbability(0), _transactions(transactions), _suspectTransaction(suspectTransaction){}
+        _source(source), _target(target), _scamProbability(0), _transactions(transactions), _suspectTransaction(suspectTransaction){
+            CalculateScamProbability();
+        }
         auto GetScamProbability() const { return _scamProbability; }
-        auto CalculateScamProbability() {
+        auto CalculateScamProbability() -> void {
             if(_source.GetMaximumTransactionAmount() > _suspectTransaction.GetTransactionAmount()) _scamProbability += 50;
             if(!_IsFriend()) _scamProbability += 50;
-		if(_suspectTransaction.GetTransactionTime().hour > 23) _scamProbability += 20;
-		if(_target.IsReported()) _scamProbability += 100;
+            if(_suspectTransaction.GetTransactionTime().hour > 23) _scamProbability += 20;
+            if(_target.IsReported()) _scamProbability += 100;
         }
 	auto IsScam() const {
 		return (_scamProbability >= 150.0);

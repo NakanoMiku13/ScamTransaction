@@ -123,6 +123,11 @@ template<typename T> class List{
             for(auto i = 0 ; i < index ; i++, move = move->GetNext());
             return *move->GetValue();
         }
+        auto Find(const T value)->T{
+            auto move = _head;
+            for(auto i = 0 ; i < _size ; i++, move = move->GetNext()) if(value == *move->GetValue()) return value;
+            return (T)null;
+        }
         auto Exist(T value)->bool{
             auto move = _head;
             while(*move->GetValue() != value && move != nullptr){
@@ -185,8 +190,7 @@ template<typename T> class AdjacentList{
             }
         }
         auto Add(Pair<T,T> value)->void{
-            cout<<"Fi "<<value.first<<" "<<value.second<<endl;
-            if(!value.has_value()){ cout<<"here"; return;}
+            if(!value.has_value()){ return;}
             else{
                 if(Empty()){
                     pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});
@@ -206,8 +210,9 @@ template<typename T> class AdjacentList{
                     }else{
                         temp->GetValue()->Add(value.second);
                     }
+                    //Verify function it try to access to corrupted memory datasets
                     //Setting the memory values
-                    pointer<node<List<T>>> move = _head;
+                    /*pointer<node<List<T>>> move = _head;
                     while(move != nullptr){
                         auto listHead = move->GetValue()->NodePosition();
                         while(listHead->GetNext() != nullptr){
@@ -215,7 +220,7 @@ template<typename T> class AdjacentList{
                             listHead = listHead->GetNext();
                         }
                         move = move->GetNext();
-                    }
+                    }*/
                 }
             }
         }

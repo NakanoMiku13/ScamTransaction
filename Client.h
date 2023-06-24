@@ -4,22 +4,25 @@
 class Client{
     private:
         string _clientName, _clientInterbankKey;
-        float _maximumTransactionAmount, _averageTransactionAmount;
+        long double _maximumTransactionAmount, _averageTransactionAmount;
         int _transactionsPerMonth, _transactionsPerDay, _maximumTransactionsPerMonth, _maximumTransactionsPerDay;
         bool _reported;
     public:
-        Client(string clientName = "Unknown", string clientInterbankKey = "0000000000000000", float maximumTransactionAmount = 0.0, int maximumTransactionsPerMonth = 0, int maximumTransactionsPerDay = 0, List<Client> closeTransactions = List<Client>()):
+        Client(string clientName = "Unknown", string clientInterbankKey = "0000000000000000", long double maximumTransactionAmount = 0.0, int maximumTransactionsPerMonth = 0, int maximumTransactionsPerDay = 0, List<Client> closeTransactions = List<Client>()):
         _clientName(clientName), _clientInterbankKey(clientInterbankKey), _maximumTransactionAmount(maximumTransactionAmount), _maximumTransactionsPerMonth(maximumTransactionsPerMonth), _reported(false)
         {
+            int report = rand() % 6;
+            if(report == 4 or report == 5) _reported = true;
+            else _reported = false;
             _transactionsPerDay = _transactionsPerMonth = 0;
         }
         //Operator overloads
         auto operator==(const Client& comparison){
             return _clientInterbankKey == comparison._clientInterbankKey && _clientName == comparison._clientName;
         }
-	auto operator==(const Transaction& comp){
-		return _clientInterbankKey == comp.GetSourceKey();
-	}
+        auto operator==(const Transaction& comp){
+            return _clientInterbankKey == comp.GetSourceKey();
+        }
         //Get functions
         auto GetClientName() const {
             return _clientName;

@@ -1,9 +1,11 @@
 #include "DateTime.h"
-#include <cstdlib>
+#include<stdlib.h>
+#include<stdio.h>
+#include<time.h>
 #include<string>
 class Transaction{
     private:
-        float _transactionAmount;
+        long double _transactionAmount;
         string _transactionId, _sourceInterbankKey, _targetInterbankKey;
         DateTime _transactionDateTime;
         auto _RandChar()->char{
@@ -21,7 +23,6 @@ class Transaction{
         }
     public:
         Transaction(string sourceInterbankKey, string targetInterbankKey, float transactionAmount): _transactionAmount(transactionAmount), _sourceInterbankKey(sourceInterbankKey), _targetInterbankKey(targetInterbankKey){
-            srand(time(NULL));
             _transactionDateTime = DateTime();
             _transactionId = _IdGenerator();
         }
@@ -49,7 +50,7 @@ class Transaction{
             return _transactionDateTime;
         }
         friend ostream& operator<<(ostream& os, const Transaction& transaction){
-            os<<transaction.GetId()<<endl;
+            os<<"Transaction id: "<<transaction.GetId()<<"\nTransaction time: "<<transaction.GetTransactionTime()<<endl<<"Source: "<<transaction.GetSourceKey()<<" -> Target: "<<transaction.GetTargetKey()<<endl;
             return os;
-        } 
+        }
 };
