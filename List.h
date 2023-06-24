@@ -186,7 +186,7 @@ template<typename T> class AdjacentList{
         }
         auto Add(Pair<T,T> value)->void{
             cout<<"Fi "<<value.first<<" "<<value.second<<endl;
-            if(!value.has_value()) return;
+            if(!value.has_value()){ cout<<"here"; return;}
             else{
                 if(Empty()){
                     pointer<node<List<T>>> newNode = new node<List<T>>({value.first, value.second});
